@@ -1,90 +1,129 @@
-// src/components/chat.js
 import { useState } from 'react';
-import styles from '../styles/Chat.module.css'; // Import the module styles
+import styles from '../styles/Chat.module.css';
 
-export default function Chat() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [file, setFile] = useState(null);
+export default function SlidingChat() {
+  const [activeChat, setActiveChat] = useState(null);
+  const [messages, setMessages] = useState({ 1: [], 2: [], 3: [] });
+  const [currentMessage, setCurrentMessage] = useState('');
 
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
+  const openChat = (chatNumber) => {
+    setActiveChat(chatNumber);  // Set active chat
   };
 
-  const handleSendMessage = () => {
-    if (inputMessage.trim()) {
-      // Add the message to the state, using functional state update
-      setMessages((prevMessages) => [...prevMessages, { type: 'text', text: inputMessage }]);
-      setInputMessage(''); // Clear the input after sending
+  const closeChat = () => {
+    setActiveChat(null);  // Set active chat to null to close
+  };
+
+  const sendMessage = () => {
+    if (currentMessage.trim() && activeChat) {
+      setMessages((prevMessages) => ({
+        ...prevMessages,
+        [activeChat]: [
+          ...prevMessages[activeChat],
+          { text: currentMessage }, // Add the text message to the chat
+        ],
+      }));
+      setCurrentMessage(''); // Clear the message input after sending
     }
   };
 
-  const handleFileUpload = async (event) => {
-    const uploadedFile = event.target.files[0];
-    if (!uploadedFile) return;
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
 
-    const formData = new FormData();
-    formData.append('file', uploadedFile);
-
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const result = await response.json();
-    if (response.ok) {
-      // Add the uploaded file's path to the messages array
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { type: 'file', text: result.file.filepath }, // Assuming `filepath` is returned from the API
-      ]);
-    } else {
-      alert('Failed to upload file');
+      fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Assuming the API response includes fileUrl
+          if (data.success && data.fileUrl) {
+            setMessages((prevMessages) => ({
+              ...prevMessages,
+              [activeChat]: [
+                ...prevMessages[activeChat],
+                { fileName: data.fileUrl }, // Add the uploaded file URL to the messages state
+              ],
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error('Error uploading file:', error);
+        });
     }
   };
 
   return (
-    <div className={`${styles.chatContainer} ${isChatOpen ? styles.open : ''}`}>
-      <div className={styles.chatTag} onClick={toggleChat}>
-        CHAT
-      </div>
-      <div className={styles.chatBox}>
-        {messages.length === 0 ? (
-          <p>No messages yet.</p>
-        ) : (
-          messages.map((msg, index) => (
-            <div key={index}>
-              {msg.type === 'text' ? (
-                <div>{msg.text}</div>
-              ) : (
-                <div>
-                  <a href={`/uploads/${msg.text}`} target="_blank" rel="noopener noreferrer">
-                    View Uploaded File
-                  </a>
+    <div className={`${styles.container}`}>
+      {/* Front Page with Chat Buttons */}
+      {activeChat === null && (
+        <div className={styles.chatButtons}>
+          {[1, 2, 3].map((chat) => (
+            <button
+              key={chat}
+              className={styles.chatButton}
+              onClick={() => openChat(chat)} // Trigger openChat with chat number
+            >
+              CHAT {chat}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Chat Panel */}
+      {activeChat !== null && (
+        <div className={`${styles.chatContainer} ${activeChat ? styles.open : ''}`}>
+          <div className={styles.chatTag} onClick={closeChat}>
+            CHAT {activeChat} <span className={styles.closeButton}></span>
+          </div>
+
+          <div className={styles.chatBox}>
+            {messages[activeChat] && messages[activeChat].length > 0 ? (
+              messages[activeChat].map((msg, idx) => (
+                <div key={idx}>
+                  {msg.text ? (
+                    <div className={styles.message}>{msg.text}</div> // Text message
+                  ) : (
+                    <div>
+                      <a
+                        href={`/uploads/${msg.fileName}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.fileLink}
+                      >
+                        View Uploaded File
+                      </a> // File message
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-      <div className={styles.inputArea}>
-        <input
-          type="text"
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          placeholder="Type a message"
-          className={styles.inputField}
-        />
-        <input
-          type="file"
-          onChange={handleFileUpload}
-          className={styles.fileUpload}
-        />
-        <button onClick={handleSendMessage} className={styles.sendButton}>
-          Send
-        </button>
-      </div>
+              ))
+            ) : (
+              <p className={styles.noMessages}>No messages yet.</p>
+            )}
+          </div>
+
+          <div className={styles.inputArea}>
+            <input
+              type="text"
+              placeholder="Type a message"
+              value={currentMessage}
+              onChange={(e) => setCurrentMessage(e.target.value)}
+              className={styles.inputField}
+            />
+            <input
+              type="file"
+              className={styles.fileUpload}
+              onChange={handleFileUpload}
+            />
+            <button onClick={sendMessage} className={styles.sendButton}>
+              Send
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

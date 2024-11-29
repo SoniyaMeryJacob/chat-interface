@@ -1,11 +1,169 @@
-/* src/styles/Chat.module.css */
+/* Chat Container */
 .chatContainer {
   position: fixed;
   bottom: 0;
-  right: -350px;
+  right: -350px; /* Hidden by default */
   width: 350px;
   height: 500px;
-  background-color: #fff;
+  background-color: #fff; /* White background */
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 8px 0 0 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+  transition: right 0.3s ease; /* Smooth slide-in animation */
+  display: flex;
+  flex-direction: column;
+}
+
+.chatContainer.open {
+  right: 0; /* Slide in when open */
+}
+
+/* Chat Tag */
+.chatTag {
+  position: absolute;
+  left: -60px;
+  top: 20px;
+  width: 60px;
+  background-color: #F25C05; /* Bright orange-red */
+  color: #fff; /* White text */
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px 8px 0 0; /* Rounded top corners */
+  cursor: pointer;
+  font-weight: bold; /* Bold text */
+}
+
+.chatTag:hover {
+  background-color: #d14e04; /* Slightly darker orange on hover */
+}
+
+/* Chat Box */
+.chatBox {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto; /* Scrollable for long messages */
+  border-bottom: 1px solid #ccc; /* Separator from input area */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center 'No messages yet' */
+  text-align: center;
+  color: #666; /* Neutral gray for 'No messages' text */
+}
+
+.message {
+  background-color: #F2B591; /* Soft peach for messages */
+  color: #3E5159; /* Dark text for readability */
+  padding: 10px;
+  border-radius: 4px; /* Slightly rounded messages */
+  margin-bottom: 10px; /* Space between messages */
+  text-align: left; /* Align text to the left */
+}
+
+/* Input Area */
+.inputArea {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  padding: 10px;
+  background-color: #F2F2F2; /* Light gray input background */
+}
+
+.inputField {
+  padding: 10px;
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 4px;
+  flex: 1;
+  margin-bottom: 10px; /* Space below input field */
+  font-size: 14px;
+}
+
+.sendButton {
+  padding: 10px;
+  background-color: #F25C05; /* Bright orange-red */
+  color: white;
+  border: none;
+  border-radius: 4px; /* Slightly rounded button */
+  cursor: pointer;
+  width: 100px;
+  align-self: flex-end; /* Align button to the right */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.sendButton:hover {
+  background-color: #d14e04; /* Darker orange-red on hover */
+}
+
+/* File Upload */
+.fileUpload {
+  margin-top: 5px; /* Space above file input */
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .chatContainer {
+    width: 100%; /* Full width on smaller screens */
+    height: 80%; /* Adjust height */
+    border-radius: 0; /* Remove rounded corners */
+  }
+
+  .chatTag {
+    left: -50px; /* Adjust tag position for smaller screens */
+    width: 50px;
+    font-size: 12px; /* Smaller text */
+  }
+
+  .inputField,
+  .sendButton {
+    font-size: 12px; /* Adjust font size for smaller screens */
+  }
+}
+
+/* General Container */
+.container {
+  position: relative;
+  height: 100vh;
+  background: #F2F2F2; /* Light Gray */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Chat Buttons */
+.chatButtons {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Vertical space between buttons */
+}
+
+.chatButton {
+  background-color: #F25C05; /* Bright orange-red */
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.chatButton:hover {
+  background-color: #F27405; /* Vivid orange */
+  transform: scale(1.05); /* Slightly larger on hover */
+}
+
+/* Chat Panel */
+.chatPanel {
+  position: fixed;
+  bottom: 0;
+  right: -350px; /* Hidden by default */
+  width: 350px;
+  height: 500px;
+  background-color: #fff; /* White background */
   border: 1px solid #ccc;
   border-radius: 8px 0 0 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -14,65 +172,139 @@
   flex-direction: column;
 }
 
-.chatContainer.open {
-  right: 0;
+.chatPanel.active {
+  right: 0; /* Slides in when active */
 }
 
-.chatTag {
-  position: absolute;
-  left: -60px;
-  top: 20px;
-  width: 60px;
-  background-color: #F25C05;
-  color: #fff;
-  text-align: center;
+/* Chat Header */
+.chatHeader {
+  background-color: #3E5159; /* Dark Grayish Blue */
+  color: white;
   padding: 10px;
-  border-radius: 8px 8px 0 0;
-  cursor: pointer;
-  font-weight: bold;
+  border-radius: 8px 0 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
 }
 
-.chatBox {
-  flex: 1;
+.closeButton {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.closeButton:hover {
+  color: #F2B591; /* Soft Peach */
+}
+
+/* Chat Body */
+.chatBody {
   padding: 10px;
   overflow-y: auto;
-  border-bottom: 1px solid #ccc;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Center 'No messages yet' */
+  height: calc(100% - 80px); /* Adjust for header and footer */
+  background-color: #F2F2F2; /* Light gray */
+}
+
+.message {
+  padding: 8px;
+  margin-bottom: 5px;
+  background-color: #F2B591; /* Soft Peach */
+  border-radius: 5px;
+  font-size: 14px;
+  color: #3E5159; /* Dark Grayish Blue */
+}
+
+.noMessages {
+  padding: 10px;
   text-align: center;
-  color: #666;
+  font-style: italic;
+  color: #F2B591;
 }
 
-.inputArea {
+/* Animation for messages */
+.message {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chat Footer */
+.chatFooter {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   padding: 10px;
+  gap: 10px;
+  border-top: 1px solid #F2B591; /* Peach border */
+  background-color: white;
 }
 
-.inputField {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.messageInput {
   flex: 1;
-  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #3E5159; /* Dark Grayish Blue */
+  border-radius: 20px;
+  font-size: 14px;
 }
 
 .sendButton {
-  padding: 10px;
-  background-color: #F25C05;
+  background-color: #F25C05; /* Bright orange-red */
   color: white;
   border: none;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border-radius: 20px;
   cursor: pointer;
-  width: 100px;
-  align-self: flex-end;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
 .sendButton:hover {
-  background-color: #d14e04;
+  background-color: #F27405; /* Vivid orange */
 }
 
-.fileUpload {
-  margin-top: 5px;
+.fileInput {
+  flex: none;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .chatPanel {
+    width: 100%;
+    height: 80%;
+  }
+
+  .chatButton {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+
+  .chatHeader {
+    font-size: 14px;
+  }
+
+  .messageInput {
+    font-size: 12px;
+  }
+
+  .sendButton {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }
