@@ -146,12 +146,6 @@
     border-radius: 0; /* Remove rounded corners */
   }
 
-  .chatTag {
-    left: -50px; /* Adjust tag position for smaller screens */
-    width: 50px;
-    font-size: 12px; /* Smaller text */
-  }
-
   .inputField,
   .sendButton {
     font-size: 12px; /* Adjust input and button font size */
