@@ -1,103 +1,140 @@
+/* src/styles/Chat.module.css */
+
 /* General Container */
 .container {
-  display: flex;
-  gap: 10px; /* Space between chat tabs */
-  justify-content: center;
-  align-items: flex-end;
   position: relative;
   height: 100vh;
   background: #f2f2f2; /* Light Gray */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
+}
+
+/* Chat Buttons */
+.chatButtons {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Vertical space between buttons */
+}
+
+.chatButton {
+  background-color: #f25c05; /* Bright orange-red */
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.chatButton:hover {
+  background-color: #f27405; /* Vivid orange */
+  transform: scale(1.05); /* Slightly larger on hover */
 }
 
 /* Chat Container */
 .chatContainer {
-  width: 100px; /* Compact view */
-  height: 60px;
-  background-color: #fff;
+  position: fixed;
+  bottom: 0;
+  right: -350px; /* Hidden by default */
+  width: 350px;
+  height: 500px;
+  background-color: #fff; /* White background */
   border: 1px solid #ccc;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px 0 0 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: right 0.3s ease;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  overflow: hidden;
-  position: relative; /* Align chat boxes */
 }
 
 .chatContainer.open {
-  width: 300px; /* Expanded width */
-  height: 400px; /* Expanded height */
-  cursor: default;
+  right: 0; /* Slide in when open */
 }
 
 /* Chat Tag */
 .chatTag {
+  position: absolute;
+  left: -60px;
+  top: 20px;
+  width: 60px;
   background-color: #f25c05; /* Bright orange-red */
-  color: #fff;
-  padding: 10px;
+  color: #fff; /* White text */
   text-align: center;
-  border-radius: 8px 8px 0 0;
-  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px 8px 0 0; /* Rounded top corners */
+  cursor: pointer;
+  font-weight: bold; /* Bold text */
 }
 
 .chatTag:hover {
-  background-color: #d14e04; /* Darker orange */
+  background-color: #d14e04; /* Slightly darker orange on hover */
 }
 
 /* Chat Box */
 .chatBox {
   flex: 1;
   padding: 10px;
-  overflow-y: auto; /* Scrollable messages */
-  background-color: #fff;
+  overflow-y: auto; /* Scrollable for long messages */
+  border-bottom: 1px solid #ccc; /* Separator from input area */
   display: flex;
   flex-direction: column;
+  justify-content: center; /* Center 'No messages yet' */
+  text-align: center;
+  color: #666; /* Neutral gray for 'No messages' text */
 }
 
 .message {
-  background-color: #f2b591; /* Soft peach */
-  color: #3e5159; /* Dark gray-blue */
+  background-color: #f2b591; /* Soft peach for messages */
+  color: #3e5159; /* Dark text for readability */
   padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  text-align: left;
+  border-radius: 4px; /* Slightly rounded messages */
+  margin-bottom: 10px; /* Space between messages */
+  text-align: left; /* Align text to the left */
 }
 
 /* Input Area */
 .inputArea {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack elements vertically */
   padding: 10px;
-  background-color: #f2f2f2; /* Light gray */
+  background-color: #f2f2f2; /* Light gray input background */
 }
 
 .inputField {
-  padding: 8px;
-  border: 1px solid #ccc;
+  padding: 10px;
+  border: 1px solid #ccc; /* Light gray border */
   border-radius: 4px;
-  margin-bottom: 10px;
+  flex: 1;
+  margin-bottom: 10px; /* Space below input field */
   font-size: 14px;
 }
 
 .sendButton {
+  padding: 10px;
   background-color: #f25c05; /* Bright orange-red */
   color: white;
   border: none;
-  border-radius: 4px;
-  padding: 8px;
+  border-radius: 4px; /* Slightly rounded button */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  width: 100px;
+  align-self: flex-end; /* Align button to the right */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
 }
 
 .sendButton:hover {
-  background-color: #d14e04; /* Darker orange-red */
+  background-color: #d14e04; /* Darker orange-red on hover */
 }
 
 /* File Upload */
 .fileUpload {
-  margin-top: 5px;
+  margin-top: 5px; /* Space above file input */
   font-size: 14px;
 }
 
@@ -105,17 +142,18 @@
 @media (max-width: 600px) {
   .chatContainer {
     width: 100%; /* Full width on smaller screens */
-    height: 80%;
-    border-radius: 0;
+    height: 80%; /* Adjust height */
+    border-radius: 0; /* Remove rounded corners */
   }
 
   .chatTag {
+    left: -50px; /* Adjust tag position for smaller screens */
+    width: 50px;
     font-size: 12px; /* Smaller text */
-    padding: 8px;
   }
 
   .inputField,
   .sendButton {
-    font-size: 12px;
+    font-size: 12px; /* Adjust input and button font size */
   }
 }
