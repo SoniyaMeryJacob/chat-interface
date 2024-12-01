@@ -1,100 +1,103 @@
+/* General Container */
+.container {
+  display: flex;
+  gap: 10px; /* Space between chat tabs */
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  height: 100vh;
+  background: #f2f2f2; /* Light Gray */
+  overflow: hidden;
+}
+
 /* Chat Container */
 .chatContainer {
-  position: fixed;
-  bottom: 0;
-  right: -350px; /* Hidden by default */
-  width: 350px;
-  height: 500px;
-  background-color: #fff; /* White background */
-  border: 1px solid #ccc; /* Light gray border */
-  border-radius: 8px 0 0 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
-  transition: right 0.3s ease; /* Smooth slide-in animation */
+  width: 100px; /* Compact view */
+  height: 60px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative; /* Align chat boxes */
 }
 
 .chatContainer.open {
-  right: 0; /* Slide in when open */
+  width: 300px; /* Expanded width */
+  height: 400px; /* Expanded height */
+  cursor: default;
 }
 
 /* Chat Tag */
 .chatTag {
-  position: absolute;
-  left: -60px;
-  top: 20px;
-  width: 60px;
-  background-color: #F25C05; /* Bright orange-red */
-  color: #fff; /* White text */
-  text-align: center;
+  background-color: #f25c05; /* Bright orange-red */
+  color: #fff;
   padding: 10px;
-  border-radius: 8px 8px 0 0; /* Rounded top corners */
-  cursor: pointer;
-  font-weight: bold; /* Bold text */
+  text-align: center;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
 }
 
 .chatTag:hover {
-  background-color: #d14e04; /* Slightly darker orange on hover */
+  background-color: #d14e04; /* Darker orange */
 }
 
 /* Chat Box */
 .chatBox {
   flex: 1;
   padding: 10px;
-  overflow-y: auto; /* Scrollable for long messages */
-  border-bottom: 1px solid #ccc; /* Separator from input area */
+  overflow-y: auto; /* Scrollable messages */
+  background-color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center 'No messages yet' */
-  text-align: center;
-  color: #666; /* Neutral gray for 'No messages' text */
 }
 
 .message {
-  background-color: #F2B591; /* Soft peach for messages */
-  color: #3E5159; /* Dark text for readability */
+  background-color: #f2b591; /* Soft peach */
+  color: #3e5159; /* Dark gray-blue */
   padding: 10px;
-  border-radius: 4px; /* Slightly rounded messages */
-  margin-bottom: 10px; /* Space between messages */
-  text-align: left; /* Align text to the left */
+  border-radius: 4px;
+  margin-bottom: 10px;
+  text-align: left;
 }
 
 /* Input Area */
 .inputArea {
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
+  flex-direction: column;
   padding: 10px;
-  background-color: #F2F2F2; /* Light gray input background */
+  background-color: #f2f2f2; /* Light gray */
 }
 
 .inputField {
-  padding: 10px;
-  border: 1px solid #ccc; /* Light gray border */
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  flex: 1;
-  margin-bottom: 10px; /* Space below input field */
+  margin-bottom: 10px;
   font-size: 14px;
 }
 
 .sendButton {
-  padding: 10px;
-  background-color: #F25C05; /* Bright orange-red */
+  background-color: #f25c05; /* Bright orange-red */
   color: white;
   border: none;
-  border-radius: 4px; /* Slightly rounded button */
+  border-radius: 4px;
+  padding: 8px;
   cursor: pointer;
-  width: 100px;
-  align-self: flex-end; /* Align button to the right */
-  transition: background-color 0.3s ease; /* Smooth hover effect */
+  transition: background-color 0.3s ease;
 }
 
 .sendButton:hover {
-  background-color: #d14e04; /* Darker orange-red on hover */
+  background-color: #d14e04; /* Darker orange-red */
 }
 
 /* File Upload */
 .fileUpload {
-  margin-top: 5px; /* Space above file input */
+  margin-top: 5px;
   font-size: 14px;
 }
 
@@ -102,209 +105,17 @@
 @media (max-width: 600px) {
   .chatContainer {
     width: 100%; /* Full width on smaller screens */
-    height: 80%; /* Adjust height */
-    border-radius: 0; /* Remove rounded corners */
+    height: 80%;
+    border-radius: 0;
   }
 
   .chatTag {
-    left: -50px; /* Adjust tag position for smaller screens */
-    width: 50px;
     font-size: 12px; /* Smaller text */
+    padding: 8px;
   }
 
   .inputField,
   .sendButton {
-    font-size: 12px; /* Adjust font size for smaller screens */
-  }
-}
-
-/* General Container */
-.container {
-  position: relative;
-  height: 100vh;
-  background: #F2F2F2; /* Light Gray */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-/* Chat Buttons */
-.chatButtons {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* Vertical space between buttons */
-}
-
-.chatButton {
-  background-color: #F25C05; /* Bright orange-red */
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 18px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, background-color 0.3s ease;
-}
-
-.chatButton:hover {
-  background-color: #F27405; /* Vivid orange */
-  transform: scale(1.05); /* Slightly larger on hover */
-}
-
-/* Chat Panel */
-.chatPanel {
-  position: fixed;
-  bottom: 0;
-  right: -350px; /* Hidden by default */
-  width: 350px;
-  height: 500px;
-  background-color: #fff; /* White background */
-  border: 1px solid #ccc;
-  border-radius: 8px 0 0 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: right 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.chatPanel.active {
-  right: 0; /* Slides in when active */
-}
-
-/* Chat Header */
-.chatHeader {
-  background-color: #3E5159; /* Dark Grayish Blue */
-  color: white;
-  padding: 10px;
-  border-radius: 8px 0 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 16px;
-}
-
-.closeButton {
-  background: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.closeButton:hover {
-  color: #F2B591; /* Soft Peach */
-}
-
-/* Chat Body */
-.chatBody {
-  padding: 10px;
-  overflow-y: auto;
-  height: calc(100% - 80px); /* Adjust for header and footer */
-  background-color: #F2F2F2; /* Light gray */
-}
-
-.message {
-  padding: 8px;
-  margin-bottom: 5px;
-  background-color: #F2B591; /* Soft Peach */
-  border-radius: 5px;
-  font-size: 14px;
-  color: #3E5159; /* Dark Grayish Blue */
-}
-
-.noMessages {
-  padding: 10px;
-  text-align: center;
-  font-style: italic;
-  color: #F2B591;
-}
-
-/* Animation for messages */
-.message {
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Chat Footer */
-.chatFooter {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  gap: 10px;
-  border-top: 1px solid #F2B591; /* Peach border */
-  background-color: white;
-}
-
-.messageInput {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #3E5159; /* Dark Grayish Blue */
-  border-radius: 20px;
-  font-size: 14px;
-}
-
-.sendButton {
-  background-color: #F25C05; /* Bright orange-red */
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.sendButton:hover {
-  background-color: #F27405; /* Vivid orange */
-}
-
-.fileInput {
-  flex: none;
-  padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 14px;
-  background-color: #f9f9f9;
-  cursor: pointer;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-  .chatPanel {
-    width: 100%;
-    height: 80%;
-  }
-
-  .chatButton {
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-
-  .chatHeader {
-    font-size: 14px;
-  }
-
-  .messageInput {
     font-size: 12px;
-  }
-
-  .sendButton {
-    font-size: 12px;
-    padding: 6px 10px;
   }
 }
