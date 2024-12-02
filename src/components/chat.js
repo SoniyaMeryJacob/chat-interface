@@ -1,3 +1,4 @@
+// Existing imports and code remain unchanged
 import { useState } from 'react';
 import styles from '../styles/Chat.module.css';
 
@@ -30,35 +31,6 @@ export default function SlidingChat() {
     }
   };
 
-  // Handle file uploads
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success && data.fileUrl) {
-            setMessages((prevMessages) => ({
-              ...prevMessages,
-              [activeChat]: [
-                ...prevMessages[activeChat],
-                { fileName: data.fileUrl }, // Add the uploaded file URL to the messages state
-              ],
-            }));
-          }
-        })
-        .catch((error) => {
-          console.error('Error uploading file:', error);
-        });
-    }
-  };
-
   return (
     <div className={styles.container}>
       {/* Persistent Chat Tags */}
@@ -82,6 +54,11 @@ export default function SlidingChat() {
         >
           {activeChat === chat && (
             <>
+              {/* Close Button */}
+              <button className={styles.closeButton} onClick={closeChat}>
+                ✕ {/* Close Icon */}
+              </button>
+
               <div className={styles.chatBox}>
                 {messages[chat] && messages[chat].length > 0 ? (
                   messages[chat].map((msg, idx) => (
@@ -112,11 +89,6 @@ export default function SlidingChat() {
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
                   className={styles.inputField}
-                />
-                <input
-                  type="file"
-                  className={styles.fileUpload}
-                  onChange={handleFileUpload}
                 />
                 <button onClick={sendMessage} className={styles.sendButton}>
                   Send
