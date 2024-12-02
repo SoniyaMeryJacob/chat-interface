@@ -2,35 +2,36 @@ import { useState } from 'react';
 import styles from '../styles/Chat.module.css';
 
 export default function SlidingChat() {
-  const [activeChat, setActiveChat] = useState(null);  // Track the active chat
+  const [activeChat, setActiveChat] = useState(null);
   const [messages, setMessages] = useState({ 1: [], 2: [], 3: [] });
   const [currentMessage, setCurrentMessage] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false); // State for hamburger menu
 
-  // Function to open a specific chat tab and close others
   const openChat = (chatNumber) => {
-    setActiveChat(chatNumber); // Set the active chat tab
+    if (activeChat === chatNumber) {
+      setActiveChat(null); // Close the chat if it's already open
+    } else {
+      setActiveChat(chatNumber);
+    }
   };
 
-  // Function to close the active chat tab
-  const closeChat = () => {
-    setActiveChat(null); // Close the active chat tab
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev);
   };
 
-  // Function to send a text message
   const sendMessage = () => {
     if (currentMessage.trim() && activeChat) {
       setMessages((prevMessages) => ({
         ...prevMessages,
         [activeChat]: [
           ...prevMessages[activeChat],
-          { text: currentMessage }, // Add the text message to the active chat
+          { text: currentMessage },
         ],
       }));
-      setCurrentMessage(''); // Clear the message input after sending
+      setCurrentMessage('');
     }
   };
 
-  // Handle file uploads
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -48,7 +49,7 @@ export default function SlidingChat() {
               ...prevMessages,
               [activeChat]: [
                 ...prevMessages[activeChat],
-                { fileName: data.fileUrl }, // Add the uploaded file URL to the messages state
+                { fileName: data.fileUrl },
               ],
             }));
           }
@@ -61,17 +62,24 @@ export default function SlidingChat() {
 
   return (
     <div className={styles.container}>
-      {/* Persistent Chat Tags */}
-      <div className={styles.chatTags}>
-        {[1, 2, 3].map((chat) => (
-          <div
-            key={chat}
-            className={styles.chatTag}
-            onClick={() => openChat(chat)} // Opens the respective chat
-          >
-            CHAT {chat}
+      {/* Hamburger Menu */}
+      <div className={`${styles.hamburgerMenu} ${menuOpen ? styles.open : ''}`}>
+        <button onClick={toggleMenu} className={styles.menuButton}>
+          ☰
+        </button>
+        {menuOpen && (
+          <div className={styles.chatTagsContainer}>
+            {[1, 2, 3].map((chat) => (
+              <div
+                key={chat}
+                className={styles.chatTag}
+                onClick={() => openChat(chat)}
+              >
+                CHAT {chat}
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
 
       {/* Chat Panels */}
@@ -82,26 +90,29 @@ export default function SlidingChat() {
         >
           {activeChat === chat && (
             <>
-              {/* Close Button */}
-              <button className={styles.closeButton} onClick={closeChat}>
-                ✕ {/* Close Icon */}
-              </button>
-
+              <div className={styles.chatHeader}>
+                <div className={styles.chatTag}>{`CHAT ${chat}`}</div>
+                <button onClick={() => openChat(chat)} className={styles.closeButton}>
+                  ✖
+                </button>
+              </div>
               <div className={styles.chatBox}>
                 {messages[chat] && messages[chat].length > 0 ? (
                   messages[chat].map((msg, idx) => (
                     <div key={idx}>
                       {msg.text ? (
-                        <div className={styles.message}>{msg.text}</div> // Text message
+                        <div className={styles.message}>{msg.text}</div>
                       ) : (
-                        <a
-                          href={`/uploads/${msg.fileName}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.fileLink}
-                        >
-                          View Uploaded File
-                        </a>
+                        <div>
+                          <a
+                            href={`/uploads/${msg.fileName}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.fileLink}
+                          >
+                            View Uploaded File
+                          </a>
+                        </div>
                       )}
                     </div>
                   ))
@@ -118,7 +129,6 @@ export default function SlidingChat() {
                   onChange={(e) => setCurrentMessage(e.target.value)}
                   className={styles.inputField}
                 />
-                {/* File Upload */}
                 <input
                   type="file"
                   className={styles.fileUpload}
