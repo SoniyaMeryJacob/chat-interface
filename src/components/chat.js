@@ -6,7 +6,7 @@ export default function SlidingChat() {
   const [messages, setMessages] = useState({ 1: [], 2: [], 3: [] });
   const [currentMessage, setCurrentMessage] = useState('');
 
-  // Function to open a specific chat tab, close others
+  // Function to open a specific chat tab and close others
   const openChat = (chatNumber) => {
     setActiveChat(chatNumber); // Set the active chat tab
   };
@@ -61,20 +61,18 @@ export default function SlidingChat() {
 
   return (
     <div className={styles.container}>
-      {/* Front Page with Chat Buttons */}
-      {activeChat === null && (
-        <div className={styles.chatButtons}>
-          {[1, 2, 3].map((chat) => (
-            <button
-              key={chat}
-              className={styles.chatButton}
-              onClick={() => openChat(chat)} // Trigger openChat with chat number
-            >
-              CHAT {chat}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Persistent Chat Tags */}
+      <div className={styles.chatTags}>
+        {[1, 2, 3].map((chat) => (
+          <div
+            key={chat}
+            className={styles.chatTag}
+            onClick={() => openChat(chat)} // Opens the respective chat
+          >
+            CHAT {chat}
+          </div>
+        ))}
+      </div>
 
       {/* Chat Panels */}
       {[1, 2, 3].map((chat) => (
@@ -84,10 +82,6 @@ export default function SlidingChat() {
         >
           {activeChat === chat && (
             <>
-              <div className={styles.chatTag} onClick={closeChat}>
-                CHAT {chat} <span className={styles.closeButton}></span>
-              </div>
-
               <div className={styles.chatBox}>
                 {messages[chat] && messages[chat].length > 0 ? (
                   messages[chat].map((msg, idx) => (
@@ -95,16 +89,14 @@ export default function SlidingChat() {
                       {msg.text ? (
                         <div className={styles.message}>{msg.text}</div> // Text message
                       ) : (
-                        <div>
-                          <a
-                            href={`/uploads/${msg.fileName}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.fileLink}
-                          >
-                            View Uploaded File
-                          </a>
-                        </div>
+                        <a
+                          href={`/uploads/${msg.fileName}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.fileLink}
+                        >
+                          View Uploaded File
+                        </a>
                       )}
                     </div>
                   ))
