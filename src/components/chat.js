@@ -1,4 +1,3 @@
-// Existing imports and code remain unchanged
 import { useState } from 'react';
 import styles from '../styles/Chat.module.css';
 
@@ -28,6 +27,35 @@ export default function SlidingChat() {
         ],
       }));
       setCurrentMessage(''); // Clear the message input after sending
+    }
+  };
+
+  // Handle file uploads
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success && data.fileUrl) {
+            setMessages((prevMessages) => ({
+              ...prevMessages,
+              [activeChat]: [
+                ...prevMessages[activeChat],
+                { fileName: data.fileUrl }, // Add the uploaded file URL to the messages state
+              ],
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error('Error uploading file:', error);
+        });
     }
   };
 
@@ -89,6 +117,12 @@ export default function SlidingChat() {
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
                   className={styles.inputField}
+                />
+                {/* File Upload */}
+                <input
+                  type="file"
+                  className={styles.fileUpload}
+                  onChange={handleFileUpload}
                 />
                 <button onClick={sendMessage} className={styles.sendButton}>
                   Send
