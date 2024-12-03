@@ -91,11 +91,12 @@ export default function SlidingChat() {
           {activeChat === chat && (
             <>
               <div className={styles.chatHeader}>
-                <div className={styles.chatTag}>{`CHAT ${chat}`}</div>
-                <button onClick={() => openChat(chat)} className={styles.closeButton}>
-                  ✖
-                </button>
-              </div>
+  <div className={styles.chatTag}>{`Welcome to Chat ${chat}`}</div>
+  <button onClick={() => openChat(chat)} className={styles.closeButton}>
+    ✖
+  </button>
+</div>
+
               <div className={styles.chatBox}>
                 {messages[chat] && messages[chat].length > 0 ? (
                   messages[chat].map((msg, idx) => (
